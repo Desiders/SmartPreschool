@@ -16,17 +16,6 @@ internal static class Program
     [STAThread]
     public static void Main()
     {
-        using var cts = new CancellationTokenSource();
-
-        Application.ApplicationExit += (sender, e) => cts.Cancel();
-
-        /* 
-            var localCts = new CancellationTokenSource(); // Form level CTS
-            var newToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, localCts.Token); // Method level CTS
-            newToken.Cancel(); // Call when need to cancel operation
-            newToken.Token.ThrowIfCancellationRequested(); // Call to throw when operation is cancelled
-        */
-
         var logFilePath = "log.txt";
         var connectionString = "Data Source=database.db";
 

@@ -17,7 +17,7 @@ internal class Migrations
 
         public Groups(AppDbContext db) => this.db = db;
 
-        public async Task MigrateAsync(CancellationToken cancel)
+        public void Migrate()
         {
             List<Group> defaultGroups = [
                 new() { Name = "Ясельная" },
@@ -34,7 +34,7 @@ internal class Migrations
 
             try
             {
-                await db.SaveChangesAsync(cancel);
+                db.SaveChanges();
             }
             catch (DbUpdateException)
             {

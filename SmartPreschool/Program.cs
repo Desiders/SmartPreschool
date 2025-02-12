@@ -14,7 +14,7 @@ internal static class Program
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-    public static async Task Main()
+    public static void Main()
     {
         using var cts = new CancellationTokenSource();
 
@@ -34,7 +34,7 @@ internal static class Program
         services.AddLogging(builder =>
         {
             builder.AddProvider(new FileLoggerProvider(logFilePath));
-            
+
         });
         services.AddDbContext<AppDbContext>(builder =>
         {
@@ -48,13 +48,13 @@ internal static class Program
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var logger = provider.GetRequiredService<ILogger<Application>>();
 
-            await db.Database.EnsureCreatedAsync(cts.Token);
+            db.Database.EnsureCreated();
 
             logger.LogInformation("Database created");
             logger.LogInformation("Start application");
 
-            await new Migrations.Groups(db).MigrateAsync(cts.Token);
-            await db.SaveChangesAsync(cts.Token);
+            new Migrations.Groups(db).Migrate();
+            db.SaveChanges();
 
             logger.LogDebug("Migrations finished");
         }

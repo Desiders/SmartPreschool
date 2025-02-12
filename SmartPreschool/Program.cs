@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using Microsoft.Extensions.Options;
 using static SmartPreschool.Database;
 using static SmartPreschool.Logger;
 

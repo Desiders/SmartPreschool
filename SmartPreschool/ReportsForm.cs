@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SmartPreschool
+namespace SmartPreschool;
+
+public partial class ReportsForm : Form
 {
-    public partial class ReportsForm : Form
+    private IServiceProvider provider;
+
+    public ReportsForm(IServiceProvider provider)
     {
-        private IServiceProvider provider;
+        this.provider = provider;
 
-        public ReportsForm(IServiceProvider provider)
-        {
-            this.provider = provider;
-
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

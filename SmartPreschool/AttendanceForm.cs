@@ -14,8 +14,8 @@ public partial class AttendanceForm : Form
 
     public AttendanceForm(IServiceProvider provider)
     {
-        this.db = provider.GetRequiredService<AppDbContext>();
-        this.logger = provider.GetRequiredService<ILogger<AttendanceForm>>();
+        db = provider.GetRequiredService<AppDbContext>();
+        logger = provider.GetRequiredService<ILogger<AttendanceForm>>();
 
         InitializeComponent();
 
@@ -50,8 +50,8 @@ public partial class AttendanceForm : Form
         }
 
         var attendanceRecords = await db.Attendance
-        .Where(a => a.Date == selectedDate)
-        .ToDictionaryAsync(a => a.ChildId);
+            .Where(a => a.Date == selectedDate)
+            .ToDictionaryAsync(a => a.ChildId);
 
         dgvAttendance.Rows.Clear();
 

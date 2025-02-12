@@ -40,6 +40,8 @@
             txtAddress = new TextBox();
             btnSave = new Button();
             btnCancel = new Button();
+            lblGroup = new Label();
+            cbxGroup = new ComboBox();
             SuspendLayout();
             // 
             // lblChildName
@@ -56,7 +58,7 @@
             // 
             txtChildName.Location = new Point(183, 25);
             txtChildName.Name = "txtChildName";
-            txtChildName.Size = new Size(114, 25);
+            txtChildName.Size = new Size(214, 25);
             txtChildName.TabIndex = 1;
             // 
             // lblBirthDate
@@ -90,7 +92,7 @@
             // 
             txtParentName.Location = new Point(183, 101);
             txtParentName.Name = "txtParentName";
-            txtParentName.Size = new Size(114, 25);
+            txtParentName.Size = new Size(214, 25);
             txtParentName.TabIndex = 5;
             // 
             // lblPhone
@@ -108,7 +110,7 @@
             mtbPhone.Location = new Point(183, 137);
             mtbPhone.Mask = "+7 (999) 999-99-99";
             mtbPhone.Name = "mtbPhone";
-            mtbPhone.Size = new Size(114, 25);
+            mtbPhone.Size = new Size(214, 25);
             mtbPhone.TabIndex = 7;
             // 
             // lblAddress
@@ -125,33 +127,56 @@
             // 
             txtAddress.Location = new Point(183, 176);
             txtAddress.Name = "txtAddress";
-            txtAddress.Size = new Size(114, 25);
+            txtAddress.Size = new Size(214, 25);
             txtAddress.TabIndex = 9;
             // 
             // btnSave
             // 
             btnSave.Font = new Font("Segoe UI", 10F);
-            btnSave.Location = new Point(18, 242);
+            btnSave.Location = new Point(18, 276);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(89, 31);
             btnSave.TabIndex = 10;
             btnSave.Text = "Сохранить";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(135, 242);
+            btnCancel.Location = new Point(132, 276);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(89, 31);
             btnCancel.TabIndex = 11;
             btnCancel.Text = "Отмена";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // lblGroup
+            // 
+            lblGroup.AutoSize = true;
+            lblGroup.Font = new Font("Segoe UI", 10F);
+            lblGroup.Location = new Point(18, 218);
+            lblGroup.Name = "lblGroup";
+            lblGroup.Size = new Size(57, 19);
+            lblGroup.TabIndex = 12;
+            lblGroup.Text = "Группа:";
+            // 
+            // cbxGroup
+            // 
+            cbxGroup.FormattingEnabled = true;
+            cbxGroup.Location = new Point(183, 215);
+            cbxGroup.Name = "cbxGroup";
+            cbxGroup.Size = new Size(214, 25);
+            cbxGroup.Sorted = true;
+            cbxGroup.TabIndex = 13;
             // 
             // RegisterForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(684, 522);
+            Controls.Add(cbxGroup);
+            Controls.Add(lblGroup);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(txtAddress);
@@ -166,7 +191,7 @@
             Controls.Add(lblChildName);
             Font = new Font("Segoe UI", 10F);
             Name = "RegisterForm";
-            Text = "RegisterForm";
+            Text = "Регистрация детей";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -185,5 +210,7 @@
         private TextBox txtAddress;
         private Button btnSave;
         private Button btnCancel;
+        private Label lblGroup;
+        private ComboBox cbxGroup;
     }
 }

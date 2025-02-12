@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartPreschool
 {
     public partial class ReportsForm : Form
     {
-        public ReportsForm()
+        private IServiceProvider provider;
+
+        public ReportsForm(IServiceProvider provider)
         {
+            this.provider = provider;
+
             InitializeComponent();
         }
     }

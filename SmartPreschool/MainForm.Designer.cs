@@ -85,7 +85,7 @@
             Controls.Add(menuMain);
             MainMenuStrip = menuMain;
             Name = "MainForm";
-            Text = "Form1";
+            Text = "Журнал детского сада";
             menuMain.ResumeLayout(false);
             menuMain.PerformLayout();
             ResumeLayout(false);

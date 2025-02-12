@@ -34,14 +34,14 @@
             dtpPeriodTo = new DateTimePicker();
             btnGenerateReport = new Button();
             dgvReport = new DataGridView();
-            lblAverageAttendance = new Label();
-            txtAverageAttendance = new TextBox();
-            btnExportPdf = new Button();
-            btnExportExcel = new Button();
             colChildName = new DataGridViewTextBoxColumn();
             colGroup = new DataGridViewTextBoxColumn();
             colAttendanceRate = new DataGridViewTextBoxColumn();
             colMissedDays = new DataGridViewTextBoxColumn();
+            lblAverageAttendance = new Label();
+            txtAverageAttendance = new TextBox();
+            btnExportPdf = new Button();
+            btnExportExcel = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvReport).BeginInit();
             SuspendLayout();
             // 
@@ -100,6 +100,28 @@
             dgvReport.Size = new Size(500, 300);
             dgvReport.TabIndex = 5;
             // 
+            // colChildName
+            // 
+            colChildName.HeaderText = "ФИО ребёнка";
+            colChildName.Name = "colChildName";
+            colChildName.ReadOnly = true;
+            // 
+            // colGroup
+            // 
+            colGroup.HeaderText = "Группа";
+            colGroup.Name = "colGroup";
+            colGroup.ReadOnly = true;
+            // 
+            // colAttendanceRate
+            // 
+            colAttendanceRate.HeaderText = "Посещаемость (%)";
+            colAttendanceRate.Name = "colAttendanceRate";
+            // 
+            // colMissedDays
+            // 
+            colMissedDays.HeaderText = "Количество пропусков";
+            colMissedDays.Name = "colMissedDays";
+            // 
             // lblAverageAttendance
             // 
             lblAverageAttendance.AutoSize = true;
@@ -139,28 +161,6 @@
             btnExportExcel.Text = "Экспорт в Excel";
             btnExportExcel.UseVisualStyleBackColor = true;
             // 
-            // colChildName
-            // 
-            colChildName.HeaderText = "ФИО ребёнка";
-            colChildName.Name = "colChildName";
-            colChildName.ReadOnly = true;
-            // 
-            // colGroup
-            // 
-            colGroup.HeaderText = "Группа";
-            colGroup.Name = "colGroup";
-            colGroup.ReadOnly = true;
-            // 
-            // colAttendanceRate
-            // 
-            colAttendanceRate.HeaderText = "Посещаемость (%)";
-            colAttendanceRate.Name = "colAttendanceRate";
-            // 
-            // colMissedDays
-            // 
-            colMissedDays.HeaderText = "Количество пропусков";
-            colMissedDays.Name = "colMissedDays";
-            // 
             // ReportsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -177,7 +177,7 @@
             Controls.Add(dtpPeriodFrom);
             Controls.Add(lblPeriodFrom);
             Name = "ReportsForm";
-            Text = "ReportsForm";
+            Text = "Сводка посещаемости детей";
             ((System.ComponentModel.ISupportInitialize)dgvReport).EndInit();
             ResumeLayout(false);
             PerformLayout();

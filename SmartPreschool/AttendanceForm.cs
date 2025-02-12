@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartPreschool
 {
     public partial class AttendanceForm : Form
     {
-        public AttendanceForm()
+        private IServiceProvider provider;
+
+        public AttendanceForm(IServiceProvider provider)
         {
+            this.provider = provider;
+
             InitializeComponent();
         }
     }

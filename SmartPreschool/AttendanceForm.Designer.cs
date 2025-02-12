@@ -31,11 +31,11 @@
             lblSelectDate = new Label();
             dtpAttendanceDate = new DateTimePicker();
             dgvAttendance = new DataGridView();
-            btnSaveAttendance = new Button();
             colChildName = new DataGridViewTextBoxColumn();
             colGroup = new DataGridViewTextBoxColumn();
             colPresent = new DataGridViewCheckBoxColumn();
             colReason = new DataGridViewComboBoxColumn();
+            btnSaveAttendance = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvAttendance).BeginInit();
             SuspendLayout();
             // 
@@ -66,16 +66,6 @@
             dgvAttendance.Size = new Size(500, 300);
             dgvAttendance.TabIndex = 2;
             // 
-            // btnSaveAttendance
-            // 
-            btnSaveAttendance.Font = new Font("Segoe UI", 10F);
-            btnSaveAttendance.Location = new Point(30, 386);
-            btnSaveAttendance.Name = "btnSaveAttendance";
-            btnSaveAttendance.Size = new Size(157, 28);
-            btnSaveAttendance.TabIndex = 3;
-            btnSaveAttendance.Text = "Сохранить изменения";
-            btnSaveAttendance.UseVisualStyleBackColor = true;
-            // 
             // colChildName
             // 
             colChildName.HeaderText = "ФИО ребёнка";
@@ -97,6 +87,16 @@
             colReason.Items.AddRange(new object[] { "Болезнь", "Отпуск/каникулы", "Семейные обстоятельства", "Медицинский осмотр/вакцинация", "Погодные условия", "Опоздание", "Карантин", "Другое" });
             colReason.Name = "colReason";
             // 
+            // btnSaveAttendance
+            // 
+            btnSaveAttendance.Font = new Font("Segoe UI", 10F);
+            btnSaveAttendance.Location = new Point(30, 386);
+            btnSaveAttendance.Name = "btnSaveAttendance";
+            btnSaveAttendance.Size = new Size(157, 28);
+            btnSaveAttendance.TabIndex = 3;
+            btnSaveAttendance.Text = "Сохранить изменения";
+            btnSaveAttendance.UseVisualStyleBackColor = true;
+            // 
             // AttendanceForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -107,7 +107,7 @@
             Controls.Add(dtpAttendanceDate);
             Controls.Add(lblSelectDate);
             Name = "AttendanceForm";
-            Text = "AttendanceForm";
+            Text = "Отслеживание посещения";
             ((System.ComponentModel.ISupportInitialize)dgvAttendance).EndInit();
             ResumeLayout(false);
             PerformLayout();

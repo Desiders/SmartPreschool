@@ -27,6 +27,13 @@ namespace SmartPreschool
             {
                 optionsBuilder.UseSqlite(this.connectionString);
             }
+
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
+                modelBuilder.Entity<Group>()
+                    .HasIndex(g => g.Name)
+                    .IsUnique();
+            }
         }
     }
 }

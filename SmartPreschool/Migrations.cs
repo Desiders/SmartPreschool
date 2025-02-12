@@ -19,17 +19,21 @@ internal class Migrations
 
         public void Migrate()
         {
-            List<Group> defaultGroups = [
-                new() { Name = "Ясельная" },
-                new() { Name = "Младшая" },
-                new() { Name = "Средняя" },
-                new() { Name = "Старшая" },
-                new() { Name = "Подготовительная" }
+            HashSet<string> defaultGroups = [
+                "Ясельная",
+                "Младшая",
+                "Средняя",
+                "Старшая",
+                "Подготовительная"
             ];
+
+            var groups = db.Groups.Select(g => g.Name).ToList();
+
+            defaultGroups.ExceptWith(groups);
 
             foreach (var group in defaultGroups)
             {
-                db.Groups.Add(group);
+                db.Groups.Add(new() { Name = group });
             }
 
             try

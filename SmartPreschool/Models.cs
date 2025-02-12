@@ -11,28 +11,34 @@ namespace SmartPreschool
     {
         public class Child
         {
-            public required int Id { get; set; }
+#pragma warning disable CS8618
+            public int Id { get; set; }
             public required string FullName { get; set; }
             public required DateTime BirthDate { get; set; }
             public required string ParentFullName { get; set; }
             public required string ParentPhone { get; set; }
             public required string ResidentialAddress { get; set; }
             public required int GroupId { get; set; }
-            public required Group Group { get; set; }
+#pragma warning disable CS8618
+            public Group Group { get; set; }
         }
 
         public class Group
         {
-            public required int Id { get; set; }
-            public required string GroupName { get; set; }
-            public required List<Child> Children { get; set; }
+#pragma warning disable CS8618
+            public int Id { get; set; }
+            public required string Name { get; set; }
+#pragma warning disable CS8618
+            public List<Child> Children { get; set; }
         }
 
         public class Attendance
         {
-            public required int Id { get; set; }
+#pragma warning disable CS8618
+            public int Id { get; set; }
             public required int ChildId { get; set; }
-            public required Child Child { get; set; }
+#pragma warning disable CS8618
+            public Child Child { get; set; }
             public required DateTime Date { get; set; }
             public required bool Attended { get; set; }
             public string? Reason { get; set; }

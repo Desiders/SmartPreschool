@@ -1,82 +1,65 @@
-using System;
-using System.Data.SQLite;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using Microsoft.Extensions.Options;
 using static SmartPreschool.Database;
 using static SmartPreschool.Logger;
 
-namespace SmartPreschool
+namespace SmartPreschool;
+
+internal static class Program
 {
-    internal static class Program
+    /// <summary>
+    ///  The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    public static async Task Main()
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        using var cts = new CancellationTokenSource();
+
+        Application.ApplicationExit += (sender, e) => cts.Cancel();
+
+        /* 
+            var localCts = new CancellationTokenSource(); // Form level CTS
+            var newToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, localCts.Token); // Method level CTS
+            newToken.Cancel(); // Call when need to cancel operation
+            newToken.Token.ThrowIfCancellationRequested(); // Call to throw when operation is cancelled
+        */
+
+        var logFilePath = "log.txt";
+        var connectionString = "Data Source=database.db";
+
+        var services = new ServiceCollection();
+        services.AddLogging(builder =>
         {
-            var  logFilePath = "log.txt";
-            var connectionString = "Data Source=database.db";
-            var logFileWriter = new StreamWriter(logFilePath, append: true);
+            builder.AddProvider(new FileLoggerProvider(logFilePath));
+            
+        });
+        services.AddDbContext<AppDbContext>(builder =>
+        {
+            builder.UseSqlite(connectionString);
+        }, ServiceLifetime.Singleton);
 
-            var services = new ServiceCollection();
-            services.AddSingleton(implementationFactory: _ => {
-                var loggerFactory = LoggerFactory.Create(builder =>
-                {
-                    builder.AddProvider(new FileLoggerProvider(logFileWriter));
-                });
-                var logger = loggerFactory.CreateLogger("Program");
+        var provider = services.BuildServiceProvider();
 
-                return logger;
-            });
-            services.AddSingleton(implementationFactory: provider =>
-            {
-                var logger = provider.GetRequiredService<ILogger>();
+        using (var scope = provider.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var logger = provider.GetRequiredService<ILogger<Application>>();
 
-                var db = new AppDbContext(connectionString);
-                db.Database.EnsureCreated();
+            await db.Database.EnsureCreatedAsync(cts.Token);
 
-                logger.LogDebug("Database created");
-
-                return db;
-            });
-            //services.AddSingleton(implementationFactory: provider => {
-            //    var logger = provider.GetRequiredService<ILogger>();
-
-            //    var conn = new SQLiteConnection(connectionString);
-
-            //    conn.Open();
-
-            //    using (var cmd = new SQLiteCommand("SELECT sqlite_version();", conn))
-            //    {
-            //        var version = cmd.ExecuteScalar().ToString();
-
-            //        logger.LogDebug($"SQLite version: {version}");
-            //    }
-
-            //    return conn;
-            //});
-            var provider = services.BuildServiceProvider();
-
-            var logger = provider.GetRequiredService<ILogger>();
-            var db = provider.GetRequiredService<AppDbContext>();
-
+            logger.LogInformation("Database created");
             logger.LogInformation("Start application");
 
-            new Migrations.Groups(db).Migrate();
-            db.SaveChanges();
+            await new Migrations.Groups(db).MigrateAsync(cts.Token);
+            await db.SaveChangesAsync(cts.Token);
 
             logger.LogDebug("Migrations finished");
-
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm(provider));
-
-            //var conn = provider.GetRequiredService<SQLiteConnection>();
-
-            //conn.Close();
-            db.Dispose();
         }
+
+        ApplicationConfiguration.Initialize();
+        Application.Run(new MainForm(provider));
     }
 }

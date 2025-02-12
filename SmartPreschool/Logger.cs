@@ -5,72 +5,70 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace SmartPreschool
+namespace SmartPreschool;
+
+internal class Logger
 {
-    internal class Logger
+    public class FileLoggerProvider : ILoggerProvider
     {
-        // Customized ILoggerProvider, writes logs to text files
-        public class FileLoggerProvider : ILoggerProvider
+        private readonly string filePath;
+
+        public FileLoggerProvider(string filePath)
         {
-            private readonly StreamWriter _logFileWriter;
-
-            public FileLoggerProvider(StreamWriter logFileWriter)
-            {
-                _logFileWriter = logFileWriter ?? throw new ArgumentNullException(nameof(logFileWriter));
-            }
-
-            public ILogger CreateLogger(string categoryName)
-            {
-                return new FileLogger(categoryName, _logFileWriter);
-            }
-
-            public void Dispose()
-            {
-                _logFileWriter.Dispose();
-            }
+            var info = new FileInfo(filePath);
+            this.filePath = info.FullName;
         }
 
-        // Customized ILogger, writes logs to text files
-        public class FileLogger : ILogger
+        public ILogger CreateLogger(string categoryName)
         {
-            private readonly string _categoryName;
-            private readonly StreamWriter _logFileWriter;
+            return new FileLogger(categoryName, filePath);
+        }
 
-            public FileLogger(string categoryName, StreamWriter logFileWriter)
+        public void Dispose() { }
+    }
+
+    public class FileLogger : ILogger, IDisposable
+    {
+        // https://metanit.com/sharp/aspnet6/7.4.php
+        private readonly string _categoryName;
+        private readonly string _filePath;
+        static readonly Lock _lock = new();
+
+        public FileLogger(string categoryName, string filePath)
+        {
+            _filePath = filePath;
+            _categoryName = categoryName;
+        }
+
+        public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+        {
+            return this;
+        }
+
+        public void Dispose()
+        {
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return true;
+        }
+
+        public void Log<TState>(
+            LogLevel logLevel,
+            EventId eventId,
+            TState state,
+            Exception? exception,
+            Func<TState, Exception?, string> formatter)
+        {
+            if (!IsEnabled(logLevel)) return;
+
+            // Вообще там есть возможность добавить форматтер для такого, но это долго
+            var message = $"[{logLevel}] [{_categoryName}] {formatter(state, exception)}";
+
+            lock (_lock)
             {
-                _categoryName = categoryName;
-                _logFileWriter = logFileWriter;
-            }
-
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return null;
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return true;
-            }
-
-            public void Log<TState>(
-                LogLevel logLevel,
-                EventId eventId,
-                TState state,
-                Exception exception,
-                Func<TState, Exception, string> formatter)
-            {
-                // Ensure that only information level and higher logs are recorded
-                if (!IsEnabled(logLevel))
-                {
-                    return;
-                }
-
-                // Get the formatted log message
-                var message = formatter(state, exception);
-
-                //Write log messages to text file
-                _logFileWriter.WriteLine($"[{logLevel}] [{_categoryName}] {message}");
-                _logFileWriter.Flush();
+                File.AppendAllText(_filePath, message + Environment.NewLine);
             }
         }
     }

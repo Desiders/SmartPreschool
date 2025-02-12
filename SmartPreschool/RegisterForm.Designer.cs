@@ -94,6 +94,7 @@
             txtParentName.Name = "txtParentName";
             txtParentName.Size = new Size(214, 25);
             txtParentName.TabIndex = 5;
+            txtParentName.Validating += TBox_Validating;
             // 
             // lblPhone
             // 
@@ -192,6 +193,7 @@
             Font = new Font("Segoe UI", 10F);
             Name = "RegisterForm";
             Text = "Регистрация детей";
+            Load += RegisterForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

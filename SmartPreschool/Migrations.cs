@@ -7,41 +7,38 @@ using Microsoft.EntityFrameworkCore;
 using static SmartPreschool.Database;
 using static SmartPreschool.Models;
 
-namespace SmartPreschool
-{
-    internal class Migrations
-    {
-        public class Groups
-        {
-            private AppDbContext db;
+namespace SmartPreschool;
 
-            public Groups(AppDbContext db)
+internal class Migrations
+{
+    public class Groups
+    {
+        private readonly AppDbContext db;
+
+        public Groups(AppDbContext db) => this.db = db;
+
+        public async Task MigrateAsync(CancellationToken cancel)
+        {
+            List<Group> defaultGroups = [
+                new() { Name = "Ясельная" },
+                new() { Name = "Младшая" },
+                new() { Name = "Средняя" },
+                new() { Name = "Старшая" },
+                new() { Name = "Подготовительная" }
+            ];
+
+            foreach (var group in defaultGroups)
             {
-                this.db = db;
+                db.Groups.Add(group);
             }
 
-            public void Migrate()
+            try
             {
-                var defaultGroups = new List<Group> {
-                    new Group { Name = "Ясельная" },
-                    new Group { Name = "Младшая" },
-                    new Group { Name = "Средняя" },
-                    new Group { Name = "Старшая" },
-                    new Group { Name = "Подготовительная" }
-                };
-
-                foreach (var group in defaultGroups)
-                {
-                    try
-                    {
-                        db.Groups.Add(group);
-                        db.SaveChanges();
-                    }
-                    catch (DbUpdateException)
-                    {
-                        db.ChangeTracker.Clear();
-                    }
-                }
+                await db.SaveChangesAsync(cancel);
+            }
+            catch (DbUpdateException)
+            {
+                db.ChangeTracker.Clear();
             }
         }
     }

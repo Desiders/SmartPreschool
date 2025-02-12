@@ -31,13 +31,13 @@
             lblSelectDate = new Label();
             dtpAttendanceDate = new DateTimePicker();
             dgvAttendance = new DataGridView();
-            btnSaveAttendance = new Button();
-            cbxGroup = new Label();
-            cbxCheckGroup = new ComboBox();
             colChildId = new DataGridViewTextBoxColumn();
             colChildName = new DataGridViewTextBoxColumn();
             colPresent = new DataGridViewCheckBoxColumn();
             colReason = new DataGridViewComboBoxColumn();
+            btnSaveAttendance = new Button();
+            cbxGroup = new Label();
+            cbxCheckGroup = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvAttendance).BeginInit();
             SuspendLayout();
             // 
@@ -68,6 +68,33 @@
             dgvAttendance.Name = "dgvAttendance";
             dgvAttendance.Size = new Size(500, 300);
             dgvAttendance.TabIndex = 2;
+            // 
+            // colChildId
+            // 
+            colChildId.HeaderText = "ID";
+            colChildId.Name = "colChildId";
+            colChildId.ReadOnly = true;
+            colChildId.Visible = false;
+            // 
+            // colChildName
+            // 
+            colChildName.HeaderText = "ФИО ребёнка";
+            colChildName.Name = "colChildName";
+            colChildName.ReadOnly = true;
+            colChildName.Resizable = DataGridViewTriState.True;
+            colChildName.Width = 200;
+            // 
+            // colPresent
+            // 
+            colPresent.HeaderText = "Присутствует";
+            colPresent.Name = "colPresent";
+            // 
+            // colReason
+            // 
+            colReason.HeaderText = "Причина отсутствия";
+            colReason.Items.AddRange(new object[] { "Болезнь", "Отпуск/каникулы", "Семейные обстоятельства", "Медицинский осмотр/вакцинация", "Погодные условия", "Опоздание", "Карантин", "Другое" });
+            colReason.Name = "colReason";
+            colReason.Width = 160;
             // 
             // btnSaveAttendance
             // 
@@ -101,33 +128,6 @@
             cbxCheckGroup.TabIndex = 14;
             cbxCheckGroup.SelectedIndexChanged += cbxCheckGroup_SelectedIndexChanged;
             // 
-            // colChildId
-            // 
-            colChildId.HeaderText = "ID";
-            colChildId.Name = "colChildId";
-            colChildId.ReadOnly = true;
-            colChildId.Visible = false;
-            // 
-            // colChildName
-            // 
-            colChildName.HeaderText = "ФИО ребёнка";
-            colChildName.Name = "colChildName";
-            colChildName.ReadOnly = true;
-            colChildName.Resizable = DataGridViewTriState.True;
-            colChildName.Width = 200;
-            // 
-            // colPresent
-            // 
-            colPresent.HeaderText = "Присутствует";
-            colPresent.Name = "colPresent";
-            // 
-            // colReason
-            // 
-            colReason.HeaderText = "Причина отсутствия";
-            colReason.Items.AddRange(new object[] { "Болезнь", "Отпуск/каникулы", "Семейные обстоятельства", "Медицинский осмотр/вакцинация", "Погодные условия", "Опоздание", "Карантин", "Другое" });
-            colReason.Name = "colReason";
-            colReason.Width = 160;
-            // 
             // AttendanceForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -141,6 +141,7 @@
             Controls.Add(lblSelectDate);
             Name = "AttendanceForm";
             Text = "Отслеживание посещения";
+            Load += AttendanceForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvAttendance).EndInit();
             ResumeLayout(false);
             PerformLayout();

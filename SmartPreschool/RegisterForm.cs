@@ -1,96 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using static SmartPreschool.Database;
 using static SmartPreschool.Models;
 
-namespace SmartPreschool
+namespace SmartPreschool;
+
+public partial class RegisterForm : Form
 {
-    public partial class RegisterForm : Form
+    //private readonly CancellationTokenSource cts;
+    private readonly AppDbContext db;
+    private readonly ILogger<RegisterForm> logger;
+
+    public RegisterForm(IServiceProvider provider)
     {
-        private AppDbContext db;
-        private ILogger logger;
+        this.db = provider.GetRequiredService<AppDbContext>();
+        this.logger = provider.GetRequiredService<ILogger<RegisterForm>>();
 
-        public RegisterForm(IServiceProvider provider)
+        InitializeComponent();
+    }
+
+    private async Task LoadGroups()
+    {
+        var groups = await db.Groups.ToListAsync();
+
+        cbxGroup.Items.Clear();
+        cbxGroup.DataSource = groups;
+        cbxGroup.DisplayMember = nameof(Group.Name);
+        cbxGroup.ValueMember = nameof(Group.Id);
+    }
+
+    private async void RegisterForm_Load(object sender, EventArgs e) => await LoadGroups();
+
+    private async void btnSave_Click(object sender, EventArgs e)
+    {
+        List<string> missingFields = [];
+
+        if (string.IsNullOrWhiteSpace(txtChildName.Text))
+            missingFields.Add(lblChildName.Text);
+        if (string.IsNullOrWhiteSpace(txtParentName.Text))
+            missingFields.Add(lblParentName.Text);
+        if (string.IsNullOrWhiteSpace(mtbPhone.Text))
+            missingFields.Add(lblPhone.Text);
+        if (string.IsNullOrWhiteSpace(txtAddress.Text))
+            missingFields.Add(lblAddress.Text);
+        if (cbxGroup.SelectedValue is null)
+            missingFields.Add(lblGroup.Text);
+
+        if (missingFields.Count > 0)
         {
-            this.db = provider.GetRequiredService<AppDbContext>();
-            this.logger = provider.GetRequiredService<ILogger>();
-
-            InitializeComponent();
-            LoadGroups();
+            string warningMessage = "Заполните следующие поля:\n- " + string.Join("\n- ", missingFields);
+            MessageBox.Show(warningMessage, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
         }
 
-        private void LoadGroups()
+        try
         {
-            var groups = db.Groups.ToList();
-
-            cbxGroup.Items.Clear();
-            cbxGroup.DataSource = groups;
-            cbxGroup.DisplayMember = "Name";
-            cbxGroup.ValueMember = "Id";
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            try
+            db.Children.Add(new()
             {
-                var missingFields = new List<string>();
+                FullName = txtChildName.Text,
+                BirthDate = dtpBirthDate.Value,
+                ParentFullName = txtParentName.Text,
+                ParentPhone = mtbPhone.Text,
+                ResidentialAddress = txtAddress.Text,
+                GroupId = Convert.ToInt32(cbxGroup.SelectedValue),
+            });
+            await db.SaveChangesAsync();
 
-                if (string.IsNullOrWhiteSpace(txtChildName.Text))
-                    missingFields.Add("ФИО ребёнка");
-                if (string.IsNullOrWhiteSpace(txtParentName.Text))
-                    missingFields.Add("ФИО родителя");
-                if (string.IsNullOrWhiteSpace(mtbPhone.Text))
-                    missingFields.Add("Телефон родителя");
-                if (string.IsNullOrWhiteSpace(txtAddress.Text))
-                    missingFields.Add("Адрес проживания");
-                if (cbxGroup.SelectedValue == null)
-                    missingFields.Add("Группа");
-
-                if (missingFields.Count > 0)
-                {
-                    string warningMessage = "Заполните следующие поля:\n- " + string.Join("\n- ", missingFields);
-                    MessageBox.Show(warningMessage, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                db.Children.Add(new Child
-                {
-                    FullName = txtChildName.Text,
-                    BirthDate = dtpBirthDate.Value,
-                    ParentFullName = txtParentName.Text,
-                    ParentPhone = mtbPhone.Text,
-                    ResidentialAddress = txtAddress.Text,
-                    GroupId = Convert.ToInt32(cbxGroup.SelectedValue),
-                });
-                db.SaveChanges();
-
-                MessageBox.Show("Ребёнок зарегистрирован!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Ошибка при регистрации ребёнка {ex.Message}");
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            MessageBox.Show("Ребёнок зарегистрирован!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-        private void btnCancel_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            txtChildName.Text = "";
-            txtParentName.Text = "";
-            mtbPhone.Text = "";
-            txtAddress.Text = "";
-            cbxGroup.Text = "";
+            logger.LogError("Ошибка при регистрации ребёнка {message}", ex.Message);
+            MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void btnCancel_Click(object sender, EventArgs e)
+    {
+        txtChildName.Text = txtParentName.Text = mtbPhone.Text = txtAddress.Text = cbxGroup.Text = string.Empty;
+    }
+
+    private void TBox_Validating(object sender, CancelEventArgs e)
+    {
+        // Пример, можно юзать на нескольких, но возможно много мороки с этим.
+        if (sender is TextBoxBase t && string.IsNullOrEmpty(t.Text)) e.Cancel = true;
     }
 }

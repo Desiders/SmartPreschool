@@ -40,11 +40,6 @@ namespace SmartPreschool
 
                 logger.LogDebug("Database created");
 
-                new Migrations.Groups(db).Migrate();
-                db.SaveChanges();
-
-                logger.LogDebug("Migrations finished");
-
                 return db;
             });
             //services.AddSingleton(implementationFactory: provider => {
@@ -66,14 +61,19 @@ namespace SmartPreschool
             var provider = services.BuildServiceProvider();
 
             var logger = provider.GetRequiredService<ILogger>();
+            var db = provider.GetRequiredService<AppDbContext>();
 
             logger.LogInformation("Start application");
+
+            new Migrations.Groups(db).Migrate();
+            db.SaveChanges();
+
+            logger.LogDebug("Migrations finished");
 
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm(provider));
 
             //var conn = provider.GetRequiredService<SQLiteConnection>();
-            var db = provider.GetRequiredService<AppDbContext>();
 
             //conn.Close();
             db.Dispose();

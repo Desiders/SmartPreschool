@@ -33,7 +33,12 @@
             menuAttendance = new ToolStripMenuItem();
             menuReports = new ToolStripMenuItem();
             panelContainer = new Panel();
+            label1 = new Label();
+            lblWelcomeAttendance = new Label();
+            lblWelcomeRegister = new Label();
+            lblWelcome = new Label();
             menuMain.SuspendLayout();
+            panelContainer.SuspendLayout();
             SuspendLayout();
             // 
             // menuMain
@@ -71,10 +76,54 @@
             // 
             // panelContainer
             // 
+            panelContainer.Controls.Add(label1);
+            panelContainer.Controls.Add(lblWelcomeAttendance);
+            panelContainer.Controls.Add(lblWelcomeRegister);
+            panelContainer.Controls.Add(lblWelcome);
             panelContainer.Location = new Point(0, 30);
             panelContainer.Name = "panelContainer";
             panelContainer.Size = new Size(700, 500);
             panelContainer.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(12, 116);
+            label1.Name = "label1";
+            label1.Size = new Size(489, 18);
+            label1.TabIndex = 3;
+            label1.Text = "Для работы с отчётами о посещаемости нажмите кнопку \"Отчёты\"";
+            // 
+            // lblWelcomeAttendance
+            // 
+            lblWelcomeAttendance.AutoSize = true;
+            lblWelcomeAttendance.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblWelcomeAttendance.Location = new Point(12, 88);
+            lblWelcomeAttendance.Name = "lblWelcomeAttendance";
+            lblWelcomeAttendance.Size = new Size(589, 18);
+            lblWelcomeAttendance.TabIndex = 2;
+            lblWelcomeAttendance.Text = "Для работы с журналом посещаемости нажмите кнопку \"Журнал посещаемости\"";
+            // 
+            // lblWelcomeRegister
+            // 
+            lblWelcomeRegister.AutoSize = true;
+            lblWelcomeRegister.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblWelcomeRegister.Location = new Point(12, 60);
+            lblWelcomeRegister.Name = "lblWelcomeRegister";
+            lblWelcomeRegister.Size = new Size(444, 18);
+            lblWelcomeRegister.TabIndex = 1;
+            lblWelcomeRegister.Text = "Для регистрации детей нажмите кнопку \"Регистрация детей\"";
+            // 
+            // lblWelcome
+            // 
+            lblWelcome.AutoSize = true;
+            lblWelcome.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblWelcome.Location = new Point(12, 23);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Size = new Size(497, 22);
+            lblWelcome.TabIndex = 0;
+            lblWelcome.Text = "Добро пожаловать в систему детей детского сада!";
             // 
             // MainForm
             // 
@@ -85,9 +134,11 @@
             Controls.Add(menuMain);
             MainMenuStrip = menuMain;
             Name = "MainForm";
-            Text = "Журнал детского сада";
+            Text = "Главная";
             menuMain.ResumeLayout(false);
             menuMain.PerformLayout();
+            panelContainer.ResumeLayout(false);
+            panelContainer.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -99,5 +150,9 @@
         private ToolStripMenuItem menuAttendance;
         private ToolStripMenuItem menuReports;
         private Panel panelContainer;
+        private Label lblWelcome;
+        private Label lblWelcomeRegister;
+        private Label lblWelcomeAttendance;
+        private Label label1;
     }
 }

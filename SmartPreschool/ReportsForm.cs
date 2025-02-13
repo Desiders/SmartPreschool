@@ -27,18 +27,18 @@ public partial class ReportsForm : Form
         InitializeComponent();
     }
 
-    private void ReportsForm_Load(object sender, EventArgs e)
+    private async void ReportsForm_Load(object sender, EventArgs e)
     {
         dtpPeriodFrom.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
         dtpPeriodTo.Value = DateTime.Today;
 
-        dtpPeriodFrom.ValueChanged += (s, e) => GenerateReport();
-        dtpPeriodTo.ValueChanged += (s, e) => GenerateReport();
+        dtpPeriodFrom.ValueChanged += async (s, e) => await GenerateReport();
+        dtpPeriodTo.ValueChanged += async (s, e) => await GenerateReport();
 
-        GenerateReport();
+        await GenerateReport();
     }
 
-    private void GenerateReport()
+    private async Task GenerateReport()
     {
         var startDate = dtpPeriodFrom.Value.Date;
         var endDate = dtpPeriodTo.Value.Date;
@@ -49,7 +49,7 @@ public partial class ReportsForm : Form
             return;
         }
 
-        var attendanceData = db.Children
+        var attendanceData = await db.Children
            .Include(c => c.Group)
            .Select(c => new
            {
@@ -58,7 +58,7 @@ public partial class ReportsForm : Form
                GroupName = c.Group.Name,
                AttendedDays = db.Attendance.Count(a => a.ChildId == c.Id && a.Date >= startDate && a.Date <= endDate && a.Attended)
            })
-           .ToList();
+           .ToListAsync();
 
         dgvReport.Rows.Clear();
 

@@ -86,6 +86,7 @@
             dgvReport.Columns.AddRange(new DataGridViewColumn[] { colChildName, colGroup, colAttendanceRate, colMissedDays });
             dgvReport.Location = new Point(34, 90);
             dgvReport.Name = "dgvReport";
+            dgvReport.ReadOnly = true;
             dgvReport.Size = new Size(500, 300);
             dgvReport.TabIndex = 5;
             // 
@@ -105,11 +106,13 @@
             // 
             colAttendanceRate.HeaderText = "Посещаемость (%)";
             colAttendanceRate.Name = "colAttendanceRate";
+            colAttendanceRate.ReadOnly = true;
             // 
             // colMissedDays
             // 
             colMissedDays.HeaderText = "Количество пропусков";
             colMissedDays.Name = "colMissedDays";
+            colMissedDays.ReadOnly = true;
             // 
             // lblAverageAttendance
             // 

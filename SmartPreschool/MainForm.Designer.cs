@@ -121,9 +121,9 @@
             lblWelcome.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblWelcome.Location = new Point(12, 23);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(497, 22);
+            lblWelcome.Size = new Size(672, 22);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Добро пожаловать в систему детей детского сада!";
+            lblWelcome.Text = "Добро пожаловать в систему по отслеживанию детей детского сада!";
             // 
             // MainForm
             // 

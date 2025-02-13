@@ -32,7 +32,6 @@
             dtpPeriodFrom = new DateTimePicker();
             lblPeriodTo = new Label();
             dtpPeriodTo = new DateTimePicker();
-            btnGenerateReport = new Button();
             dgvReport = new DataGridView();
             colChildName = new DataGridViewTextBoxColumn();
             colGroup = new DataGridViewTextBoxColumn();
@@ -40,8 +39,8 @@
             colMissedDays = new DataGridViewTextBoxColumn();
             lblAverageAttendance = new Label();
             txtAverageAttendance = new TextBox();
-            btnExportPdf = new Button();
-            btnExportExcel = new Button();
+            lblFullAttendance = new Label();
+            txtFullAttendance = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvReport).BeginInit();
             SuspendLayout();
             // 
@@ -80,16 +79,6 @@
             dtpPeriodTo.Name = "dtpPeriodTo";
             dtpPeriodTo.Size = new Size(200, 23);
             dtpPeriodTo.TabIndex = 3;
-            // 
-            // btnGenerateReport
-            // 
-            btnGenerateReport.Font = new Font("Segoe UI", 10F);
-            btnGenerateReport.Location = new Point(34, 406);
-            btnGenerateReport.Name = "btnGenerateReport";
-            btnGenerateReport.Size = new Size(156, 32);
-            btnGenerateReport.TabIndex = 4;
-            btnGenerateReport.Text = "Сформировать отчёт";
-            btnGenerateReport.UseVisualStyleBackColor = true;
             // 
             // dgvReport
             // 
@@ -141,43 +130,42 @@
             txtAverageAttendance.Size = new Size(100, 25);
             txtAverageAttendance.TabIndex = 7;
             // 
-            // btnExportPdf
+            // lblFullAttendance
             // 
-            btnExportPdf.Font = new Font("Segoe UI", 10F);
-            btnExportPdf.Location = new Point(285, 406);
-            btnExportPdf.Name = "btnExportPdf";
-            btnExportPdf.Size = new Size(118, 32);
-            btnExportPdf.TabIndex = 8;
-            btnExportPdf.Text = "Экспорт в PDF";
-            btnExportPdf.UseVisualStyleBackColor = true;
+            lblFullAttendance.AutoSize = true;
+            lblFullAttendance.Font = new Font("Segoe UI", 10F);
+            lblFullAttendance.Location = new Point(345, 49);
+            lblFullAttendance.Name = "lblFullAttendance";
+            lblFullAttendance.Size = new Size(122, 19);
+            lblFullAttendance.TabIndex = 10;
+            lblFullAttendance.Text = "Всего посещений:";
             // 
-            // btnExportExcel
+            // txtFullAttendance
             // 
-            btnExportExcel.Font = new Font("Segoe UI", 10F);
-            btnExportExcel.Location = new Point(419, 406);
-            btnExportExcel.Name = "btnExportExcel";
-            btnExportExcel.Size = new Size(115, 32);
-            btnExportExcel.TabIndex = 9;
-            btnExportExcel.Text = "Экспорт в Excel";
-            btnExportExcel.UseVisualStyleBackColor = true;
+            txtFullAttendance.Font = new Font("Segoe UI", 10F);
+            txtFullAttendance.Location = new Point(513, 50);
+            txtFullAttendance.Name = "txtFullAttendance";
+            txtFullAttendance.ReadOnly = true;
+            txtFullAttendance.Size = new Size(100, 25);
+            txtFullAttendance.TabIndex = 11;
             // 
             // ReportsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(684, 461);
-            Controls.Add(btnExportExcel);
-            Controls.Add(btnExportPdf);
+            Controls.Add(txtFullAttendance);
+            Controls.Add(lblFullAttendance);
             Controls.Add(txtAverageAttendance);
             Controls.Add(lblAverageAttendance);
             Controls.Add(dgvReport);
-            Controls.Add(btnGenerateReport);
             Controls.Add(dtpPeriodTo);
             Controls.Add(lblPeriodTo);
             Controls.Add(dtpPeriodFrom);
             Controls.Add(lblPeriodFrom);
             Name = "ReportsForm";
             Text = "Сводка посещаемости детей";
+            Load += ReportsForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvReport).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -189,15 +177,14 @@
         private DateTimePicker dtpPeriodFrom;
         private Label lblPeriodTo;
         private DateTimePicker dtpPeriodTo;
-        private Button btnGenerateReport;
         private DataGridView dgvReport;
         private Label lblAverageAttendance;
         private TextBox txtAverageAttendance;
-        private Button btnExportPdf;
-        private Button btnExportExcel;
         private DataGridViewTextBoxColumn colChildName;
         private DataGridViewTextBoxColumn colGroup;
         private DataGridViewTextBoxColumn colAttendanceRate;
         private DataGridViewTextBoxColumn colMissedDays;
+        private Label lblFullAttendance;
+        private TextBox txtFullAttendance;
     }
 }

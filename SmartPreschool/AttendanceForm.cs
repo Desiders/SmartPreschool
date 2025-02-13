@@ -18,8 +18,6 @@ public partial class AttendanceForm : Form
         logger = provider.GetRequiredService<ILogger<AttendanceForm>>();
 
         InitializeComponent();
-
-        dtpAttendanceDate.Value = DateTime.Today;
     }
 
     private async Task LoadGroups()
@@ -66,6 +64,8 @@ public partial class AttendanceForm : Form
 
     private async void AttendanceForm_Load(object sender, EventArgs e)
     {
+        dtpAttendanceDate.Value = DateTime.Today;
+
         await LoadGroups();
         await LoadAttendance();
     }
